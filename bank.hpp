@@ -20,14 +20,14 @@ public:
     void book_transaction(int _source, int _dest, double _amount);
     void inquiry_transaction(Status reply,int transaction_id, int owner_id);
     void show_account(int account_id);
-    vector<account> get_accounts() { return accounts; }
+    vector<account*> get_accounts() { return accounts; }
     vector<transaction*> get_transactions() { return transactions; }
 
 private:
     
     int account_number;
-    vector<account> accounts;
-    vector<customer> customers;
+    vector<account*> accounts;
+    vector<customer*> customers;
     vector<transaction*> transactions;
 
 };

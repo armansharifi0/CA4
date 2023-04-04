@@ -20,15 +20,16 @@ void bank::make_account(vector<int> _customers_id,double balance)
     for ( int x : _customers_id )
     {
 
-        for ( customer &y : customers )
+        for ( customer* y : customers )
         {
             
-            if (y.get_customer_id() == x)
-                customers_pointers.push_back(&y);
+            if (y->get_customer_id() == x)
+                customers_pointers.push_back(y);
         }
     }
+    account* ac = new account(this->account_number++, customers_pointers, balance);
     
-    accounts.push_back(account(this->account_number++, customers_pointers, balance));
+    accounts.push_back(ac);
     
 }
 
@@ -36,8 +37,8 @@ void bank::make_account(vector<int> _customers_id,double balance)
 
 void bank::create_customer(string name)
 {
-    
-    customers.push_back(customer(name));
+    customer* cu = new customer(name);
+    customers.push_back(cu);
     
 }
 
@@ -45,31 +46,32 @@ void bank::create_customer(string name)
 void bank::add_owner(int account_id, int owner_id)
 {
     
-    customer* intended_customer; 
+    int index; 
     
-    for ( customer &x : customers )
+    for (int i = 0; i < customers.size(); i++)
     {
         
-        if (x.get_customer_id() == owner_id)
+        if (customers[i]->get_customer_id() == owner_id)
+        
+            
+            index = i;
+            break;
+    }
+    for (int i = 0; i < accounts.size(); i++)
+    {
+        
+        if (accounts[i]->get_account_id() == account_id)
         {
             
-            intended_customer = &x;
+            
+            accounts[i]->set_customer(customers[index]);
+            
             break;
         }
     }
-    for ( account &x : accounts )
-    {
-        
-        if (x.get_account_id() == account_id)
-        {
-            
-            
-            x.get_customers().push_back(intended_customer);
-            
-            break;
-        }
-    }
+
 }
+
 
 
 void bank::book_transaction(int _source, int _dest, double _amount)
@@ -77,12 +79,12 @@ void bank::book_transaction(int _source, int _dest, double _amount)
     account* source_account;
     account* dest_account;
 
-    for ( account &x : accounts )
+    for ( account* x : accounts )
     {
-        if (x.get_account_id() == _source)
-            source_account = &x;
-        if (x.get_account_id() == _dest)
-            dest_account = &x;
+        if (x->get_account_id() == _source)
+            source_account = x;
+        if (x->get_account_id() == _dest)
+            dest_account = x;
     }
     
 
@@ -115,11 +117,11 @@ void bank::show_account(int account_id)
 {
 
     account intended_acount;
-    for ( account &x : accounts )
+    for ( account* x : accounts )
     {
-        if ( account_id == x.get_account_id())
+        if ( account_id == x->get_account_id())
         {
-            x.print_details();
+            x->print_details();
             return;
         }
     }

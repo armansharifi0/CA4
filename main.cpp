@@ -19,7 +19,7 @@ void parser(bank &b, string order)
         pieces.push_back(piece);
     }
 
-    if (pieces[3] == "create_customer")
+    if (pieces[0] == "create_customer")
     {
         
         b.create_customer(pieces[1] + " " + pieces[2]);

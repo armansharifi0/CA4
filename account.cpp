@@ -61,3 +61,9 @@ void account::print_details()
 
     }
 }
+
+
+void account::set_customer(customer* cu)
+{
+    customers.push_back(cu);
+}
