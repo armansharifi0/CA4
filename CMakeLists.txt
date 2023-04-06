@@ -3,3 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 
 add_executable(CA4 main.cpp customer.cpp account.cpp transaction.cpp bank.cpp)
 add_executable(main_test main_test.cpp)
+add_executable(ap11_3 ap11_3.cpp)
+add_executable(ap11_4_5 ap11_4_5.cpp)
+add_executable(ap11_6_7 ap11_6_7.cpp)
