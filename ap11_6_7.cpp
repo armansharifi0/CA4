@@ -2,40 +2,67 @@
 #include <vector>
 using namespace std;
 
+class UndefinedOperation {};
+
 class Employee
 {
 public:
-    Employee (int s, int h);
-    int earning();
-protected:
-    int salary;
-    int hour;
+    virtual int earning(int hour);
 };
 
-Employee::Employee(int s, int h)
+
+int Employee::earning(int hour)
 {
-    salary = s;
-    hour = h;
+    try
+    {
+        throw UndefinedOperation();
+    }
+    catch(UndefinedOperation ex)
+    {
+        cerr << "The chosen operation isn't defined for this class" << endl;
+    }
+    return 0;
 }
 
-int Employee::earning()
-{
-    return salary;
-}
 
-class Tactical_Employee : public Employee
+class Stable_Wage_Employee : public Employee
 {
 public:
-    Tactical_Employee(int w, int s)
-        : Employee(w, s) {}
-    int earning();
+    Stable_Wage_Employee(int w)
+        : wage(w) {}
+    virtual int earning(int hour);
+private:
+    int wage;
 };
 
-int Tactical_Employee::earning()
+int Stable_Wage_Employee::earning(int hour)
 {
-    int new_wage = 1.5 * (salary/hour);
-    int extra_hour = hour - 140;
-    return Employee::earning() + new_wage * extra_hour;
+    return wage * hour;
+}
+
+
+class Variable_Wage_Employee : public Employee
+{
+public:
+    Variable_Wage_Employee(int s)
+        : salary(s) {}
+    virtual int earning(int hour);
+private:
+    int salary;
+};
+
+int Variable_Wage_Employee::earning(int hour)
+{
+    int wage = salary / hour;
+    if (hour > 140)
+    {
+        int extra_hour = 180 - hour;
+        return ((140 * wage) + (extra_hour * 1.5 * (wage)));
+    }else
+    {
+        return wage * hour;
+    }
+    
 }
 
 
@@ -43,30 +70,38 @@ int Tactical_Employee::earning()
 class Organization
 {
 public:
-    Organization(vector<Employee> Es = {}, vector<Tactical_Employee> TEs = {});
-    void add_Employee(Employee E);
-    void add_TacEmployee(Tactical_Employee TE);
+    void add_Employee(Employee *E);
     int total_earnings(int avg_hrs);
 private:
-    vector<Employee> Employees;
-    vector<Tactical_Employee> Tatical_Employees;
+    vector<Employee*> Employees;
 };
 
 
-Organization::Organization(vector<Employee> Es = {}, vector<Tactical_Employee> TEs = {})
-{
-    Employees = Es;
-    Tatical_Employees = TEs;
-}
-
-void Organization::add_Employee(Employee E)
+void Organization::add_Employee(Employee *E)
 {
     Employees.push_back(E);
 }
 
-void Organization::add_TacEmployee(Tactical_Employee TE)
+int Organization::total_earnings(int avg_hrs)
 {
-    Tatical_Employees.push_back(TE);
+    int total = 0;
+    for (int i = 0; i < Employees.size(); i++)
+    {
+        total += Employees[i]->earning(avg_hrs);
+    }
+    return total;
 }
 
+
+int main()
+{
+    Stable_Wage_Employee e1(15);
+    Variable_Wage_Employee e2(2000);
+    Organization o1;
+    o1.add_Employee(&e1);
+    o1.add_Employee(&e2);
+
+    cout << o1.total_earnings(180) << endl;
+    
+}
 

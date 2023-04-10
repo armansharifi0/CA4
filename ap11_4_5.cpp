@@ -1,6 +1,7 @@
 #include <vector>
 #include <cstdlib>
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 class IllegalArgumentException {};
@@ -90,6 +91,7 @@ public:
     Equilateral(int init_x, int init_y, int a);
     virtual void scale(int s);
     virtual void print();
+    virtual void area();
 private:
     int side;
 };
@@ -108,6 +110,11 @@ void Equilateral::scale(int s)
 void Equilateral::print()
 {
     cout << "Equilateral: " << x << ',' << y << ',' << side << endl;
+}
+
+void Equilateral::area()
+{
+    cout << (sqrt(3)/4)*side*side << endl;
 }
 
 class Segment: public Shape
@@ -139,11 +146,26 @@ void Segment::print()
 
 void Segment::area()
 {
-    cout << "Not Defined" << endl;
+    try
+    {
+        throw UndefinedOperation();
+    }catch(UndefinedOperation ex)
+    {
+        cerr << "The chosen operation isn't defined for this class" << endl;
+    }
 }
 
 int main()
 {
-    
+    Equilateral e1(10, 10, 5);
+    e1.print();
+    e1.scale(3);
+    e1.print();
+    e1.area();
+    Segment s1(35, 75, 2);
+    s1.print();
+    s1.scale(5);
+    s1.print();
+    s1.area();
 }	
 					
