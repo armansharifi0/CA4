@@ -1,80 +1,65 @@
 #include <iostream>
-#include <string>
-#include <vector>
 using namespace std;
 
-class A_test_exception {};
+#define DEFAULT_SIZE 10
 
-class beche;
+class invalid_operation_ex {};
 
-class Human
-{
+class stack {
 public:
-    Human(string n, int h, int w) : name(n), height(h), weight(w) {}
-    void akbar(int asghar);
-    void add_beche(beche *b);
-    void print();
-
-protected:
-    string name;
-    int height;
-    int weight;
-    vector<beche*> becha;
-};
-
-
-void Human::akbar(int asghar)
-{
-    
-    try 
-    {
-        
-        throw A_test_exception();
-
-    }catch(A_test_exception ex)
-    {
-        cerr << "wrong asghar" << endl;
-    }
-}
-
-void Human::add_beche(beche *b)
-{
-    becha.push_back(b);
-}
-
-// void Human::print()
-// {
-//     becha[0]->farhad();
-// }
-
-
-class beche 
-{
-public:
-    beche(string nick) : nick_name(nick) {};
-    void farhad(int farshad);
-    void specs();
+    stack(int size);
+    ~stack();
+    void push(int x);
+    void pop();
+    int top() const;
+    int elem_count() const { return count; }
 private:
-    string nick_name;
+    int *elements;
+    int size;
+    int count;
 };
 
-
-void beche::farhad(int farshad)
-{
-    cout << "Va Ama Farshad: " << farshad << endl;
+stack::stack(int s = DEFAULT_SIZE) {
+    cout << "--constructor called\n";
+    size = s;
+    elements = new int[size];
+    count = 0;
 }
 
-void beche::specs()
-{
-    cout << nick_name << endl;
+stack::~stack() {
+    cout << "--destructor called\n";
+    delete[] elements;
 }
 
+void stack::push(int x) {
+    if (count >= size)
+        throw invalid_operation_ex();
 
-int main()
-{
-    beche Arman("Armi");
-    Arman.farhad(80);
-    Human beratali("barati", 170, 70);
-    beratali.add_beche(&Arman);
-
+    elements[count] = x;
+    count++;
 }
+
+void stack::pop() {
+    if (count > 0)
+        count--;
+    else
+        throw invalid_operation_ex();
+}
+
+int stack::top() const {
+    if (count > 0)
+        return elements[count-1];
+    else
+        throw invalid_operation_ex();
+}
+
+int main() {
+    cout << "first" << endl;
+    stack s;
+    cout << "second" << endl;
+    s.push(4);
+    cout << "third" << endl;
+    cout << s.top() << endl;
+    cout << "fourth" << endl;
+}
+				
