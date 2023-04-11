@@ -15,7 +15,7 @@ public:
     void operator+=(int i_number);
     bool operator==(BigInt _number);
 private:
-    vector<int> numbers;
+    int *numbers;
 };
 
 
@@ -198,6 +198,6 @@ int main()
 {
     BigInt a(211);
     BigInt b(211);
-    bool c = a == b;
+    BigInt c = a + b;
     cout << c << endl;
 }
