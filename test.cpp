@@ -53,13 +53,17 @@ int stack::top() const {
         throw invalid_operation_ex();
 }
 
-int main() {
-    cout << "first" << endl;
-    stack s;
-    cout << "second" << endl;
-    s.push(4);
-    cout << "third" << endl;
-    cout << s.top() << endl;
-    cout << "fourth" << endl;
+int* func(int array[])
+{
+    return array;
+}
+
+
+int main() 
+{
+    int myNumbers[5] = {10, 20, 30, 40, 50};
+    int* b = func(myNumbers);
+    // cout << sizeof(b) << endl;
+    cout << b[1] << endl;
 }
 				
