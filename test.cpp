@@ -61,10 +61,6 @@ int* func(int array[])
 
 int main() 
 {
-    int a = 1;
-    if(a == true)
-        cout << "sahih" << endl;
-    else
-        cout << "hasabi" << endl;
+    
 }
 				

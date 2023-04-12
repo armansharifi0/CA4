@@ -22,14 +22,15 @@ public:
     Node* last() { return _last; }
     void clear();
     bool key_check(int key);
-    bool rec_key_check(int key, Node *&p = _head);
+    bool rec_key_check(Node *&p, int &key);
+    void push_back(List *list);
 private:
     Node* _head;
     Node* _last;
 };
 
 List::List() {
-    _head = NULL;
+    _head = NULL; 
     _last = NULL;
 }
 
@@ -84,15 +85,23 @@ bool List::key_check(int key)
         else
             return false;
     }
+    return false;
 }
 
-bool List::rec_key_check(Node *p, int key)
+bool List::rec_key_check(Node *&p, int &key)
 {
     if (p == NULL)
         return false;
     if (p->data == key)
         return true;
-    rec_key_check(p->next, key);
+    return rec_key_check(p->next, key);
+}
+
+void List::push_back(List *list)
+{
+    Node* new_node = new Node(list->head()->data, list->head()->next, _last);
+    _last->next = new_node;
+    _last = list->last();
 }
 
 int main() {
