@@ -8,7 +8,8 @@ class BigInt
 {
 public:
     BigInt(int _number);
-    BigInt (string _number);
+    BigInt(string _number);
+    BigInt(const BigInt& b);
     ~BigInt();
     int* get_numbers() { return numbers; }
     int get_size() { return size; }
@@ -17,6 +18,7 @@ public:
     void operator+=(BigInt _number);
     void operator+=(int i_number);
     bool operator==(BigInt _number);
+    BigInt& operator=(const BigInt& b);
 private:
     int *numbers;
     int size;
@@ -67,9 +69,10 @@ vector<int> digits_sum(vector<int> number1, vector<int> number2)
 BigInt::BigInt(int _number)
 {
     size = 0;
-    while (_number != 0)
+    int _number_2 = _number;
+    while (_number_2 != 0)
     {
-        _number /= 10;
+        _number_2 /= 10;
         size++;
     }
     numbers = new int[size];
@@ -87,9 +90,9 @@ BigInt::BigInt(string _number)
     size = _number.size();
     numbers = new int[size];
 
-    for (int i = _number.size() - 1; i >= 0; i--)
+    for (int i = 0; i < size ; i++)
     {
-        numbers[i] = _number[i] - '0';
+        numbers[i] = _number[size - i - 1] - '0';
     }
 }
 
@@ -98,6 +101,16 @@ BigInt::~BigInt()
 {
     delete[] numbers;
 }
+
+
+BigInt::BigInt(const BigInt& b)
+{
+    size = b.size;
+    numbers = new int[size];
+    for (int i = 0; i < size; i++)
+        numbers[i] = b.numbers[i];
+}
+
 
 BigInt BigInt::operator+(BigInt _number)
 {
@@ -145,6 +158,7 @@ BigInt BigInt::operator+(int i_number)
 
 BigInt operator+(int number,BigInt _number)
 {
+    
     vector<int> temp;
     vector<int> numbers = itov(number);
     if (numbers.size() >= _number.get_size())
@@ -235,11 +249,29 @@ ostream& operator<<(ostream& out, BigInt& c)
     return out;
 }
 
+BigInt& BigInt::operator=(const BigInt& b)
+{
+    cout << "akbar" << endl;
+    if (this == &b)
+        return *this;
+    
+    size = b.size;
+    delete[] numbers;
+    numbers = new int[size];
+    for (int i = 0; i < size; i++)
+        numbers[i] = b.numbers[i];
+    
+    return *this;
+}
+
 
 int main()
 {
     BigInt a(211);
     BigInt b(211);
-    BigInt c = a + b;
+    bool c = a == b ;
     cout << c << endl;
+
+    return 0;
+    
 }
