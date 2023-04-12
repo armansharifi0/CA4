@@ -61,9 +61,10 @@ int* func(int array[])
 
 int main() 
 {
-    int myNumbers[5] = {10, 20, 30, 40, 50};
-    int* b = func(myNumbers);
-    // cout << sizeof(b) << endl;
-    cout << b[1] << endl;
+    int a = 1;
+    if(a == true)
+        cout << "sahih" << endl;
+    else
+        cout << "hasabi" << endl;
 }
 				
