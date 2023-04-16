@@ -58,9 +58,30 @@ int* func(int array[])
     return array;
 }
 
+template<typename T>
+class Gorgali
+{
+public:
+    Gorgali(T d) : data(d) {}
+    void badompeshgelte();
+private:
+    T data;
+};
+
+template<typename T>
+void Gorgali<T>::badompeshgelte()
+{
+    if (data[0] == 'a')
+        cout << "chekmare" << endl;
+}
+
+
+
+
 
 int main() 
 {
-    
+    // Gorgali<int> Gorgshayan(10);
+    // Gorgshayan.badompeshgelte();
 }
 				

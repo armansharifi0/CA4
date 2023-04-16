@@ -66,19 +66,25 @@ void parser(bank &b, string order)
 int main()
 {
 
-    bank b;    
-    fstream newfile;
-    newfile.open("../input.txt",ios::in);
-    if (newfile.is_open()){
-        string line;
-        while(getline(newfile, line))
+    {
+        bank b;    
+        fstream newfile;
+        newfile.open("../input.txt",ios::in);
+
+        if (newfile.is_open())
         {
-            if (line == "\r")
-                break;
-            parser(b,line);
+            string line;
+            while(getline(newfile, line))
+            {
+                if (line == "\r")
+                    break;
+                parser(b,line);
+            }
+            newfile.close();   
         }
-        newfile.close();   
-   }
+    }
+
+   
 
     return 0;
 }

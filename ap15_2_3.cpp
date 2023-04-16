@@ -2,42 +2,68 @@
 #include <string>
 using namespace std;
 
-class Node {
-public:
-    Node(string d, Node *n = NULL, Node *p = NULL) 
-        : data(d), next(n), prev(p) {}
+#include <iostream>
+using namespace std;
 
-    string data;
-    Node *next;
-    Node *prev;
-};
-
+template<typename T>
 class List {
+private:
+    class Node {
+    public:
+        Node(T d, Node *n = NULL, Node *p = NULL) 
+            : data(d), next(n), prev(p) {}
+
+        T data;
+        Node *next;
+        Node *prev;
+    };
+
+public:
+    class Iterator {
+    public:
+        T next_element() { 
+            T to_be_returned = current->data;
+            current = current->next;
+            return to_be_returned;
+        }
+        bool has_more_elements() {
+            return current != NULL;
+        }
+    private:
+        Node *current;
+        Iterator(Node* n) { current = n; }
+        friend class List;
+    };
+
 public:
     List();
     ~List();
     void print();
-    void push_front(string x);
-    void push_back(string x);
-    Node* head() { return _head; }
-    Node* last() { return _last; }
-    void clear();
+    void push_front(T x);
+    void push_back(T x);
+    Iterator get_iterator() {
+        return Iterator(_head);
+    }
 private:
     Node* _head;
     Node* _last;
 };
 
-List::List() {
+template<typename T>
+List<T>::List() {
     _head = NULL;
     _last = NULL;
 }
 
-void List::print() {
-    for (Node* p = _head; p != NULL; p = p->next)
+template<typename T>
+void List<T>::print() {
+    for (Node* p = _head; p != NULL; p = p->next) {
         cout << p->data << ' ';
+    }
 }
 
-void List::push_front(string x) {
+template<typename T>
+void List<T>::push_front(T x) {
     Node *new_node = new Node(x);
     new_node->next = _head;
     if (_head != NULL)
@@ -47,7 +73,8 @@ void List::push_front(string x) {
         _last = new_node;
 }
 
-void List::push_back(string x) {
+template<typename T>
+void List<T>::push_back(T x) {
     if (_head == NULL)
         push_front(x);
     else {
@@ -58,11 +85,8 @@ void List::push_back(string x) {
     }
 }
 
-List::~List() {
-    clear();
-}
-
-void List::clear() {
+template<typename T>
+List<T>::~List() {
     Node *p = _head;
     while (p != NULL) {
         Node *q = p;
@@ -70,38 +94,44 @@ void List::clear() {
         delete q;
     }
     _head = NULL;
-    _last = NULL;
 }
 
-template<typename MyList>
-class ExList: public List
+template<typename T>
+class MyList: public List
 {
 public:
     void remove_last();
 };
 
-template<typename MyList>
-void ExList<MyList>::remove_last()
+template<typename T>
+void MyList<T>::remove_last()
 {
-    Node *q = this->last();
-    
+
+    Node *q = _last;
+    _last = _last->prev;
+    delete q;
+
 }
 
 
+
+
+
 int main() {
-    List l;
+    List<int> l;
     
-    l.push_back("akbar");
-    l.push_front("asghar");
-    l.push_front("shayan");
+    l.push_back(86);
+    l.push_front(43);
+    l.push_front(12);
     
     l.print();
     cout << endl;
 
-
-
-    List l2;
-    l2.push_back("ashkan");
-    l2.push_back("farhad");
-    l2.push_back("farshad");
+    int sum = 0;
+    
+    List<int>::Iterator it = l.get_iterator();
+    while (it.has_more_elements())
+        sum += it.next_element();
+        
+    cout << sum << endl;
 }

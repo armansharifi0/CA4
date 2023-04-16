@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class List {
@@ -69,8 +70,35 @@ int NumberElement::sumation()
 
 class ListElement : public Element
 {
+public:
+    ListElement(List* l) : List(l) {}
+    virtual int sumation();
+private:
+    List* List;
 
+};
+
+
+int ListElement::sumation()
+{
+    int sum;
+    List::Iterator it = List->get_iterator();
+    while (it.has_more_elements())
+        sum += it.next_element();
+    return sum;
 }
+
+
+class GeneralList
+{
+public:
+    ~GeneralList();
+    void add_element();
+private:
+    vector<Element*> Elements;
+};
+
+
 
 
 
