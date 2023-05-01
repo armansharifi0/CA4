@@ -5,6 +5,7 @@ using namespace std;
 
 struct student
 {
+    // student (string name_, int code_, int score_) : name(name_), code(code_), score(score_) {}
     string name;
     int code;
     int score;
@@ -50,19 +51,3 @@ int main()
 }
 
 
-struct student
-{
-    string name;
-    int code;
-    int score;
-};
-
-
-typedef int (*compare)(const void* s1, const void* s2);
-
-int compare_codes(const student* s1, const student* s2)
-{
-    return s1->code - s2->code;
-}
-
-compare mycompare = compare_codes;
